@@ -863,7 +863,7 @@ def aviso_pagamento():
 if __name__ == '__main__':
     try:
         port = int(os.environ.get("PORT", 5000))
-        logger.info("Iniciando servidor Flask...")
+        logger.info(f"Iniciando servidor Flask na porta {port}...")
         app.run(host='0.0.0.0', port=port)
     except Exception as e:
         logger.error(f"Erro ao iniciar o servidor Flask: {str(e)}")
