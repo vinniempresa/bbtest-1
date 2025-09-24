@@ -212,26 +212,12 @@
                 const data = await response.json();
 
                 if (data.status === 'completed') {
-                    // Track Facebook Pixel Purchase Event
-                    {% if pixel_id %}
-                    if (typeof fbq !== 'undefined') {
-                        var purchaseValue = {% if pix_data.amount %}{{ pix_data.amount / 100 }}{% else %}{{ valor_total|replace(',', '.')|float }}{% endif %};
-                        fbq('track', 'Purchase', {
-                            value: purchaseValue,
-                            currency: 'BRL',
-                            content_ids: ['{{ pix_data.id }}'],
-                            content_name: 'Inscrição Concurso Banco do Brasil',
-                            content_type: 'service'
-                        });
-                    }
-                    {% endif %}
-
                     // Update interface to show success
                     document.querySelector('.animate-spin').classList.remove('animate-spin');
                     document.querySelector('svg').style.display = 'none';
                     document.querySelector('h2').textContent = 'Pagamento Confirmado!';
 
-                    // Redirect instantly
+                    // Redirect instantly to confirmation page (Purchase event will be tracked there)
                     window.location.href = '/obrigado';
                     return;
                 }

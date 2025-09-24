@@ -19,6 +19,25 @@
 
     fbq('init', '{{ pixel_id }}');
     fbq('track', 'PageView');
+    
+    // Track Purchase event only once per session
+    if (!sessionStorage.getItem('purchase_tracked_{{ session.get("user_data", {}).get("cpf", "unknown") }}')) {
+        {% if session.get('pix_data') and session.get('valor_total') %}
+        var purchaseValue = {% if session.pix_data.amount %}{{ session.pix_data.amount / 100 }}{% else %}{{ session.valor_total|replace(',', '.')|float }}{% endif %};
+        var transactionId = '{{ session.get("pix_data", {}).get("id", "unknown") }}';
+        
+        fbq('track', 'Purchase', {
+            value: purchaseValue,
+            currency: 'BRL',
+            content_ids: [transactionId],
+            content_name: 'Inscrição Concurso Banco do Brasil',
+            content_type: 'service'
+        }, {eventID: 'purchase_' + transactionId});
+        
+        // Mark as tracked to prevent duplicates
+        sessionStorage.setItem('purchase_tracked_{{ session.get("user_data", {}).get("cpf", "unknown") }}', 'true');
+        {% endif %}
+    }
     </script>
     <noscript>
     <img height="1" width="1" style="display:none"
