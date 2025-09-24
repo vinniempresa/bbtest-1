@@ -1,4 +1,5 @@
 <!-- Meta Pixel Code -->
+{% if pixel_id %}
 <script>
 !function(f,b,e,v,n,t,s)
 {if(f.fbq)return;n=f.fbq=function(){n.callMethod?
@@ -16,4 +17,5 @@ fbq('track', 'PageView');
 <img height="1" width="1" style="display:none"
 src="https://www.facebook.com/tr?id={{ pixel_id }}&ev=PageView&noscript=1"/>
 </noscript>
+{% endif %}
 <!-- End Meta Pixel Code -->
