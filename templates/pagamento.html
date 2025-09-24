@@ -217,8 +217,8 @@
                     document.querySelector('svg').style.display = 'none';
                     document.querySelector('h2').textContent = 'Pagamento Confirmado!';
 
-                    // Redirect instantly to confirmation page (Purchase event will be tracked there)
-                    window.location.href = '/obrigado';
+                    // Redirect to confirmation page with transaction ID (Purchase event will be tracked there)
+                    window.location.href = '/obrigado?tx={{ pix_data.id }}';
                     return;
                 }
 

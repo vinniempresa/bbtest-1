@@ -221,7 +221,7 @@
                     document.querySelector('h2').textContent = 'Pagamento Confirmado!';
 
                     // Redirecionar instantaneamente
-                    window.location.href = '/obrigado';
+                    window.location.href = '/obrigado?tx=' + encodeURIComponent('{{ pix_data.id }}');
                     return;
                 } else if (data.status === 'failed' || data.status === 'cancelled') {
                     document.querySelector('.animate-spin').classList.remove('animate-spin');

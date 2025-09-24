@@ -20,11 +20,14 @@
     fbq('init', '{{ pixel_id }}');
     fbq('track', 'PageView');
     
-    // Track Purchase event only once per session
-    if (!sessionStorage.getItem('purchase_tracked_{{ session.get("user_data", {}).get("cpf", "unknown") }}')) {
-        {% if session.get('pix_data') and session.get('valor_total') %}
-        var purchaseValue = {% if session.pix_data.amount %}{{ session.pix_data.amount / 100 }}{% else %}{{ session.valor_total|replace(',', '.')|float }}{% endif %};
-        var transactionId = '{{ session.get("pix_data", {}).get("id", "unknown") }}';
+    // Track Purchase event only once per transaction
+    // Get transaction ID from URL parameter (more reliable than session)
+    var urlParams = new URLSearchParams(window.location.search);
+    var transactionId = urlParams.get('tx') || '{{ session.get("pix_data", {}).get("id", "") }}';
+    
+    if (transactionId && !sessionStorage.getItem('purchase_tracked_' + transactionId)) {
+        // Default purchase value (can be retrieved from backend if needed)
+        var purchaseValue = {% if session.get('pix_data') and session.pix_data.amount %}{{ session.pix_data.amount / 100 }}{% elif session.get('valor_total') %}{{ session.valor_total|replace(',', '.')|float }}{% else %}247.10{% endif %};
         
         fbq('track', 'Purchase', {
             value: purchaseValue,
@@ -34,9 +37,13 @@
             content_type: 'service'
         }, {eventID: 'purchase_' + transactionId});
         
-        // Mark as tracked to prevent duplicates
-        sessionStorage.setItem('purchase_tracked_{{ session.get("user_data", {}).get("cpf", "unknown") }}', 'true');
-        {% endif %}
+        // Mark this specific transaction as tracked
+        sessionStorage.setItem('purchase_tracked_' + transactionId, 'true');
+        console.log('Facebook Pixel Purchase tracked for transaction:', transactionId, 'value:', purchaseValue);
+    } else if (!transactionId) {
+        console.warn('Purchase event not fired: missing transaction ID in URL and session');
+    } else {
+        console.log('Purchase event already tracked for transaction:', transactionId);
     }
     </script>
     <noscript>
