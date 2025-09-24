@@ -8,7 +8,7 @@ from flask import Flask, render_template, url_for, request, redirect, flash, ses
 from flask_sqlalchemy import SQLAlchemy
 from sqlalchemy.orm import DeclarativeBase
 from urllib.parse import urlparse, urlencode, quote
-from techbynet_api import create_techbynet_api
+# Removido import do TechByNet - usando apenas For4Payments
 
 # Configuração do logging
 logging.basicConfig(
@@ -396,41 +396,38 @@ def pagamento_pix():
         flash('Sessão expirada. Por favor, faça a consulta novamente.')
         return redirect(url_for('index'))
 
-    # Gerar PIX real usando TechByNet API
+    # Gerar PIX usando For4Payments API
     try:
-        techbynet_api = create_techbynet_api()
+        payment_api = create_payment_api()
+        payment_data = {
+            'name': dados_usuario['nome_real'], 
+            'email': dados_usuario.get('email', generate_random_email()), 
+            'cpf': dados_usuario['cpf'],
+            'phone': dados_usuario.get('phone', generate_random_phone()), 
+            'amount': 59.00  # Valor da taxa de inscrição
+        }
+
+        pix_data = payment_api.create_pix_payment(payment_data)
+        logger.info(f"PIX For4Payments gerado com sucesso - ID: {pix_data.get('id')}")
         
-        # Criar transação PIX
-        pix_result = techbynet_api.create_pix_transaction(
-            customer_data=dados_usuario,
-            amount=59.00,  # Valor da taxa de inscrição
-            phone=dados_usuario.get('phone')
-        )
+        # Salvar dados do PIX na sessão
+        session['pix_data'] = {
+            'id': pix_data.get('id'),
+            'pixCode': pix_data.get('pixCode'),
+            'pixQrCode': pix_data.get('pixQrCode'),
+            'amount': 59.00,
+            'expiresAt': pix_data.get('expiresAt'),
+            'status': pix_data.get('status', 'pending')
+        }
         
-        if pix_result.get('success'):
-            logger.info(f"PIX gerado com sucesso - ID: {pix_result.get('transaction_id')}")
-            
-            # Salvar dados do PIX na sessão
-            session['pix_data'] = {
-                'transaction_id': pix_result.get('transaction_id'),
-                'qr_code': pix_result.get('qr_code'),
-                'pix_code': pix_result.get('pix_code'),
-                'amount': 59.00,
-                'expires_at': pix_result.get('expires_at')
-            }
-            
-            return render_template('pagamento_pix.html',
-                                pix_data=pix_result,
-                                dados={'name': dados_usuario['nome_real'],
-                                      'email': dados_usuario['email'],
-                                      'phone': dados_usuario['phone'],
-                                      'cpf': dados_usuario['cpf']},
-                                valor_total="59,00",
-                                current_year=datetime.now().year)
-        else:
-            logger.error(f"Erro ao gerar PIX: {pix_result.get('error')}")
-            flash('Erro ao gerar pagamento PIX. Tente novamente.')
-            return redirect(url_for('verificar_endereco'))
+        return render_template('pagamento_pix.html',
+                            pix_data=pix_data,
+                            dados={'name': dados_usuario['nome_real'],
+                                  'email': dados_usuario['email'],
+                                  'phone': dados_usuario['phone'],
+                                  'cpf': dados_usuario['cpf']},
+                            valor_total="59,00",
+                            current_year=datetime.now().year)
             
     except Exception as e:
         logger.error(f"Erro inesperado ao gerar PIX: {str(e)}")

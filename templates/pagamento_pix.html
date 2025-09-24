@@ -161,10 +161,10 @@
                                 <span class="text-gray-600">Valor a Pagar:</span>
                                 <span class="text-2xl font-bold text-bb-blue">R$ {{ valor_total }}</span>
                             </div>
-                            {% if pix_data.transaction_id %}
+                            {% if pix_data.id %}
                             <div class="flex justify-between items-center text-sm">
                                 <span class="text-gray-500">ID da Transação:</span>
-                                <span class="font-mono text-gray-700">{{ pix_data.transaction_id }}</span>
+                                <span class="font-mono text-gray-700">{{ pix_data.id }}</span>
                             </div>
                             {% endif %}
                         </div>
@@ -178,7 +178,7 @@
                                 QR Code PIX
                             </h3>
                         </div>
-                        {% if pix_data.qr_code %}
+                        {% if pix_data.pixCode %}
                         <div class="qr-code-container rounded-lg p-6 mb-4 inline-block">
                             <div id="qrcode" class="flex justify-center"></div>
                         </div>
@@ -204,9 +204,9 @@
                                 Código PIX
                             </h3>
                         </div>
-                        {% if pix_data.pix_code %}
+                        {% if pix_data.pixCode %}
                         <div class="pix-code-container rounded-lg p-4 mb-4">
-                            <div class="pix-code" id="pixCode">{{ pix_data.pix_code }}</div>
+                            <div class="pix-code" id="pixCode">{{ pix_data.pixCode }}</div>
                         </div>
                         <button onclick="copyPixCode()" id="copyButton" class="w-full bg-bb-blue hover:bg-blue-700 text-white font-semibold py-3 px-4 rounded-lg transition-all duration-200 flex items-center justify-center space-x-2">
                             <i class="fas fa-copy" id="copyIcon"></i>
@@ -273,11 +273,11 @@
     <script>
         // Gerar QR Code quando a página carregar
         document.addEventListener('DOMContentLoaded', function() {
-            {% if pix_data.qr_code %}
+            {% if pix_data.pixCode %}
             try {
                 // Criar QR Code usando qrcode-generator
                 const qr = qrcode(0, 'M');
-                qr.addData('{{ pix_data.qr_code }}');
+                qr.addData('{{ pix_data.pixCode }}');
                 qr.make();
                 
                 // Gerar HTML do QR Code
